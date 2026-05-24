@@ -8,8 +8,11 @@ type EpisodePlayerProps = {
   startAt: number;
 };
 
+const PROGRESS_UPDATE_INTERVAL_SEC = 15;
+
 export function EpisodePlayer({ episodeId, videoUrl, startAt }: EpisodePlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const lastSentRef = useRef(0);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -18,15 +21,15 @@ export function EpisodePlayer({ episodeId, videoUrl, startAt }: EpisodePlayerPro
     }
 
     video.currentTime = startAt;
+    lastSentRef.current = startAt;
 
-    let lastSent = 0;
     const sendProgress = async (completed = false) => {
       const current = Math.floor(video.currentTime || 0);
-      if (!completed && current - lastSent < 15) {
+      if (!completed && current - lastSentRef.current < PROGRESS_UPDATE_INTERVAL_SEC) {
         return;
       }
 
-      lastSent = current;
+      lastSentRef.current = current;
       await fetch("/api/watch-progress", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

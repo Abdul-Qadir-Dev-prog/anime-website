@@ -55,7 +55,7 @@ npm run prisma:generate
 npm run prisma:push
 ```
 
-5. Seed sample data (includes admin + sample anime):
+5. Seed sample data (development-only sample admin + sample anime):
 
 ```bash
 npm run prisma:seed
@@ -69,12 +69,12 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-## Default seeded admin
+## Development sample admin (seed)
 
 - Email: `admin@example.com`
 - Password: `admin123`
 
-Change these immediately in production.
+This account is for local development only. Replace or rotate seeded credentials before any shared/staging/production deployment.
 
 ## Project routes
 
@@ -92,3 +92,4 @@ Change these immediately in production.
 - Store videos in dedicated object/video storage (S3, Mux, Cloudflare Stream, etc.).
 - Configure secure OAuth callback URLs for Google and Apple.
 - Set a strong `NEXTAUTH_SECRET`.
+- Remove development seed credentials and provision admin users securely.
