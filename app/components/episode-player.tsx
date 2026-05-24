@@ -54,7 +54,10 @@ export function EpisodePlayer({ episodeId, videoUrl, startAt }: EpisodePlayerPro
     };
 
     const handleTimeUpdate = () => {
-      submitProgress(false);
+      const current = Math.floor(video.currentTime || 0);
+      if (current - lastSentRef.current >= PROGRESS_UPDATE_INTERVAL_SEC) {
+        submitProgress(false);
+      }
     };
 
     const handleVisibilityChange = () => {
