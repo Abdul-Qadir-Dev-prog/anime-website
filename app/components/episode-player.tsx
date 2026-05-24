@@ -41,20 +41,44 @@ export function EpisodePlayer({ episodeId, videoUrl, startAt }: EpisodePlayerPro
       });
     };
 
+    const submitProgress = (completed = false) => {
+      sendProgress(completed).catch(() => {});
+    };
+
     const handlePause = () => {
-      void sendProgress(false);
+      submitProgress(false);
     };
 
     const handleEnded = () => {
-      void sendProgress(true);
+      submitProgress(true);
+    };
+
+    const handleTimeUpdate = () => {
+      submitProgress(false);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        submitProgress(false);
+      }
+    };
+
+    const handlePageHide = () => {
+      submitProgress(false);
     };
 
     video.addEventListener("pause", handlePause);
     video.addEventListener("ended", handleEnded);
+    video.addEventListener("timeupdate", handleTimeUpdate);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("pagehide", handlePageHide);
 
     return () => {
       video.removeEventListener("pause", handlePause);
       video.removeEventListener("ended", handleEnded);
+      video.removeEventListener("timeupdate", handleTimeUpdate);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("pagehide", handlePageHide);
     };
   }, [episodeId, startAt]);
 
