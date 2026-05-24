@@ -1,4 +1,5 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { Role } from "@prisma/client";
 import type { NextAuthOptions } from "next-auth";
 import { getServerSession } from "next-auth";
 import AppleProvider from "next-auth/providers/apple";
@@ -105,7 +106,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
-        session.user.role = (token.role as "USER" | "ADMIN") ?? "USER";
+        session.user.role = (token.role as Role) ?? Role.USER;
       }
       return session;
     },

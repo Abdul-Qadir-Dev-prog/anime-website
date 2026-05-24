@@ -8,7 +8,7 @@ type EpisodePlayerProps = {
   startAt: number;
 };
 
-const PROGRESS_UPDATE_INTERVAL_SEC = 15;
+const PROGRESS_UPDATE_INTERVAL_SECONDS = 15;
 
 export function EpisodePlayer({ episodeId, videoUrl, startAt }: EpisodePlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -25,7 +25,7 @@ export function EpisodePlayer({ episodeId, videoUrl, startAt }: EpisodePlayerPro
 
     const sendProgress = async (completed = false) => {
       const current = Math.floor(video.currentTime || 0);
-      if (!completed && current - lastSentRef.current < PROGRESS_UPDATE_INTERVAL_SEC) {
+      if (!completed && current - lastSentRef.current < PROGRESS_UPDATE_INTERVAL_SECONDS) {
         return;
       }
 
@@ -55,7 +55,7 @@ export function EpisodePlayer({ episodeId, videoUrl, startAt }: EpisodePlayerPro
 
     const handleTimeUpdate = () => {
       const current = Math.floor(video.currentTime || 0);
-      if (current - lastSentRef.current >= PROGRESS_UPDATE_INTERVAL_SEC) {
+      if (current - lastSentRef.current >= PROGRESS_UPDATE_INTERVAL_SECONDS) {
         submitProgress(false);
       }
     };
